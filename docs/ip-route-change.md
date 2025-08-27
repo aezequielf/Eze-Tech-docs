@@ -18,35 +18,35 @@ El comando `ip route change` **no modifica parcialmente** una ruta. En cambio, b
 
 ```bash
 RTNETLINK answers: No such file or directory
-
+```
 ---
 
 ## 🔍 Atributos que deben coincidir
 
 Para que el cambio sea aceptado, deben coincidir todos los atributos de la ruta existente:
 
-• 	Destino ()
-• 	Interfaz ()
-• 	Gateway ()
-• 	Métrica ()
-• 	Protocolo (, , etc.)
-• 	Scope (, )
-• 	Tabla (, , )
+- Destino ()
+- Interfaz ()
+- Gateway ()
+- Métrica ()
+- Protocolo (, , etc.)
+- Scope (, )
+- Tabla (, , )
 
 ---
 
 ## 🧪 Ejemplo práctico
 
 Supongamos que tenés esta ruta:
-
+```bash
 ip route show 192.168.1.0/24
 
 192.168.1.0/24 via 192.168.1.1 dev eth0 proto static metric 100
-
+```
 Querés cambiar el gateway a 192.168.1.254. El comando correcto sería:
-
+```bash
 sudo ip route change 192.168.1.0/24 via 192.168.1.254 dev eth0 proto static metric 100
-
+```
 ---
 
 ## NOTA, si no colocaras dev eth0 el kernel intenta deducir este parámetro de acuerdo a su tabla de rutas directamente conectadas a la interfaz.
@@ -55,19 +55,19 @@ sudo ip route change 192.168.1.0/24 via 192.168.1.254 dev eth0 proto static metr
 
 ## 🧷 Ventajas de
  
-• 	No interrumpe la conectividad.
-• 	Preserva atributos avanzados como métricas, protocolos y scopes.
-• 	Ideal para scripts de monitoreo y corrección automática.
-• 	Compatible con entornos críticos y rutas dinámicas.
-• 	Evita efectos colaterales en tablas de rutas sensibles.
+- No interrumpe la conectividad.
+- Preserva atributos avanzados como métricas, protocolos y scopes.
+- Ideal para scripts de monitoreo y corrección automática.
+- Compatible con entornos críticos y rutas dinámicas.
+- Evita efectos colaterales en tablas de rutas sensibles.
 
 ---
 
 ## 📚 Conclusión
- ip route change es una herramienta poderosa y subdocumentada. Su uso correcto requiere comprender cómo el kernel valida las rutas, pero ofrece una alternativa más segura y elegante que el clásico delete/add. En entornos donde la precisión importa —como redes críticas, automatización o debugging forense— este enfoque marca la diferencia.
+ `ip route change` es una herramienta poderosa y subdocumentada. Su uso correcto requiere comprender cómo el kernel valida las rutas, pero ofrece una alternativa más segura y elegante que el clásico delete/add. En entornos donde la precisión importa —como redes críticas, automatización o debugging forense— este enfoque marca la diferencia.
 
 ## ✍️ Autor
-Documentado por Ezequiel, especialista en sistemas, redes y ciberseguridad. Este artículo forma parte de su bitácora técnica sobre ciencia personal, scripting y troubleshooting reproducible.
+Documentado por Ezequiel, especialista en sistemas y redes. Este artículo forma parte de su bitácora técnica sobre ciencia personal, scripting y troubleshooting reproducible.
 
 
 
