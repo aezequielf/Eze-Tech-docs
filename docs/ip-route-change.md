@@ -19,6 +19,8 @@ El comando `ip route change` **no modifica parcialmente** una ruta. En cambio, b
 ```bash
 RTNETLINK answers: No such file or directory
 
+---
+
 ## 🔍 Atributos que deben coincidir
 
 Para que el cambio sea aceptado, deben coincidir todos los atributos de la ruta existente:
@@ -30,6 +32,8 @@ Para que el cambio sea aceptado, deben coincidir todos los atributos de la ruta 
 • 	Protocolo (, , etc.)
 • 	Scope (, )
 • 	Tabla (, , )
+
+---
 
 ## 🧪 Ejemplo práctico
 
@@ -43,7 +47,11 @@ Querés cambiar el gateway a 192.168.1.254. El comando correcto sería:
 
 sudo ip route change 192.168.1.0/24 via 192.168.1.254 dev eth0 proto static metric 100
 
+---
+
 ## NOTA, si no colocaras dev eth0 el kernel intenta deducir este parámetro de acuerdo a su tabla de rutas directamente conectadas a la interfaz.
+
+---
 
 ## 🧷 Ventajas de
  
@@ -52,6 +60,8 @@ sudo ip route change 192.168.1.0/24 via 192.168.1.254 dev eth0 proto static metr
 • 	Ideal para scripts de monitoreo y corrección automática.
 • 	Compatible con entornos críticos y rutas dinámicas.
 • 	Evita efectos colaterales en tablas de rutas sensibles.
+
+---
 
 ## 📚 Conclusión
  ip route change es una herramienta poderosa y subdocumentada. Su uso correcto requiere comprender cómo el kernel valida las rutas, pero ofrece una alternativa más segura y elegante que el clásico delete/add. En entornos donde la precisión importa —como redes críticas, automatización o debugging forense— este enfoque marca la diferencia.
