@@ -8,7 +8,7 @@ En la mayoría de los tutoriales sobre administración de rutas en Linux, el enf
 - No preserva atributos como métricas, protocolos o scopes.
 - No es idempotente ni seguro en entornos automatizados.
 
-Existe una alternativa más precisa: `ip route change`. Sin embargo, su uso requiere entender cómo el kernel valida las rutas existentes. Esta documentación explora su funcionamiento, casos de uso y cómo automatizarlo de forma segura.
+Existe una alternativa más precisa: `ip route change`. Sin embargo, su uso requiere entender cómo el kernel valida las rutas existentes. Esta documentación explora su funcionamiento y casos de uso.
 
 ---
 
