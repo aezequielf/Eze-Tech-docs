@@ -53,25 +53,43 @@ actionunban =
 
 ## 🐍 Script bloquear_mikrotik.py
 ```
-#!/usr/bin/env python3
+#!/home/eferro/venvs/mikrotik-api/bin/python3
 from routeros_api import RouterOsApiPool
 import sys
 
-ip_ban = sys.argv[1]
+if len(sys.argv) != 2:
+    print("Uso: bloquear_mikrotik.py <IP>")
+    sys.exit(1)
 
-api_pool = RouterOsApiPool('IP_DEL_ROUTER', username='admin', password='tu_clave', plaintext_login=True)
-api = api_pool.get_api()
-address_list = api.get_resource('/ip/firewall/address-list')
+# IP a bloquear (recibida desde Fail2Ban)
+ip_bloquear = sys.argv[1]
 
-address_list.add({
-    'address': ip_ban,
-    'list': 'Spammer',
-    'timeout': '30m',
-    'comment': 'Bloqueado por Fail2Ban'
-})
+# Conexión al Mikrotik
+api_pool = RouterOsApiPool(
+    host='10.10.10.254',
+    username='mngapi',
+    password='XxCv15IzslLjnwm73)x',
+    plaintext_login=True
+)
+try:
+    api = api_pool.get_api()
 
-api_pool.disconnect()
+    # Agregar IP a la lista negra
+    firewall = api.get_resource('/ip/firewall/address-list')
+    firewall.add(
+        address=ip_bloquear,
+        list='spammer',
+        timeout='00:30:00',
+        comment='Desde Fail2Ban',
+        disabled='no'
+    )
+    api_pool.disconnect()
+except Exception as e:
+    print(f"Error al conectar con Mikrotik: {e}")
+    sys.exit(1)
 
+if __name__ == "__main__":
+    print(f"IP {ip_bloquear} bloqueada en Mikrotik.")
 ```
 
 ## ✅ Validación
@@ -87,29 +105,30 @@ En Mikrotik
 
 
 
-🧠 Filosofía de diseño distribuido
+## 🧠 Filosofía de diseño distribuido
 - Fail2Ban: análisis local, detección y control de tiempo.
 - Mikrotik: ejecución remota, bloqueo y desbloqueo automático.
 - Sincronización por diseño: bantime = timeout, sin necesidad de scripts de unban.
 - Desacoplamiento limpio: cada sistema cumple su rol sin interferencias.
 
-📦 Requisitos
+## 📦 Requisitos
 - Python 3
 - routeros_api (pip install routeros_api)
 - Acceso SSH a Debian y API habilitada en Mikrotik
 - Logs remotos configurados en Mikrotik (/system logging action remote)
 
-🧪 Casos de prueba
+## 🧪 Casos de prueba
 - IP que falla 3 veces en 10 minutos → bloqueada 30 minutos
 - IP ya bloqueada → script ignora duplicados
 - IP desbloqueada automáticamente por Mikrotik → Fail2Ban no interviene
 
-📝 Notas adicionales
+## 📝 Notas adicionales
+
 - Este sistema puede escalarse a múltiples Mikrotik con mínima modificación.
 - Se recomienda monitoreo con bpytop, Conky o scripts de log rotativo.
 - Ideal para entornos con múltiples puntos de entrada y logs centralizados.
 
-🤝 Autor
+### 🤝 Autor
 Ezequiel — Especialista en sistemas, redes y ciberseguridad. Documentación reproducible, scripting quirúrgico y ciencia personal aplicada.
 
 
