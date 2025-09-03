@@ -1,6 +1,6 @@
 # 🛡️ Integración Fail2Ban + Mikrotik vía API
 
-Sistema distribuido de defensa automatizada que detecta intentos de autenticación fallida en logs del sistema y bloquea las IP ofensivas directamente en el firewall Mikrotik, usando listas dinámicas con timeout sincronizado.
+Sistema distribuido de defensa automatizada que detecta intentos de autenticación fallida en logs del sistema y bloquea las IP ofensivas directamente en el firewall de RouterOS, usando listas dinámicas con timeout sincronizado. Esta mini tutorial supone el manejo de ciertos conocimientos básicos de Linux, Mikrotik, redes y programación python.
 
 ---
 
@@ -12,7 +12,8 @@ Sistema distribuido de defensa automatizada que detecta intentos de autenticaci�
 - Evitar redundancias en el proceso de desbloqueo.
 
 ---
-
+## Instalar la librería routeros_api de python
+---
 ## 🧩 Componentes
 
 | Archivo / Script                     | Rol                                                                 |
@@ -57,6 +58,7 @@ actionunban =
 from routeros_api import RouterOsApiPool
 import sys
 
+# si el script necesita el ip para la regal de bloqueo 
 if len(sys.argv) != 2:
     print("Uso: bloquear_mikrotik.py <IP>")
     sys.exit(1)
