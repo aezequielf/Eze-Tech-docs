@@ -177,7 +177,6 @@ sudo fail2ban-client status auth_fail
 - Python 3
 - routeros_api (pip install routeros_api)
 - Acceso SSH a Debian y API habilitada en Mikrotik
-- Logs remotos configurados en Mikrotik (/system logging action remote)
 
 ## 🧪 Casos de prueba
 - IP que falla 3 veces en 10 minutos → bloqueada 30 minutos
