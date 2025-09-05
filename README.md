@@ -3,6 +3,7 @@ Documentación técnica reproducible sobre sistemas, redes y ciencia personal ap
 ## 📄 Documentos disponibles
 
 - [Modificar rutas en Linux con `ip route change`](docs/ip-route-change.md)
+- [Implementar Fail2Ban para bloquear dinámicamente mediante FW de RouterOR -Mikrotik-](docs/routeros_Fail2ban-API.md).
 
 ## ✍️ Autor
 
