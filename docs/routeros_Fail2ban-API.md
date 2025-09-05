@@ -131,7 +131,7 @@ except Exception as e:
 if __name__ == "__main__":
     print(f"IP {ip_bloquear} bloqueada en Mikrotik.")
 ```
-Seguramente querrás probar tu script, para verificar que funcione correctamente. Para que tengas en cuenta este script supone que le vas a pasra una ip con formate correcto, no valida esta condición. No te olvides de darle permisos de ejecución 😅
+Seguramente querrás probar tu script, para verificar que funcione correctamente. Para que tengas en cuenta este script supone que le vas a pasar una ip con formato correcto, no valida esta condición. No te olvides de darle permisos de ejecución 😅
 
 ```bash
 chmod +x bloquear_mikrotik.py
