@@ -106,9 +106,9 @@ ip_bloquear = sys.argv[1]
 
 # Conexión al Mikrotik
 api_pool = RouterOsApiPool(
-    host='10.10.10.254',
-    username='mngapi',
-    password='XxCv15IzslLjnwm73)x',
+    host='ip_del_routeros',
+    username='usuario_api_routeros',
+    password='clave',
     plaintext_login=True
 )
 try:
@@ -131,6 +131,23 @@ except Exception as e:
 if __name__ == "__main__":
     print(f"IP {ip_bloquear} bloqueada en Mikrotik.")
 ```
+Seguramente querrás probar tu script, para verificar que funcione correctamente. Para que tengas en cuenta este script supone que le vas a pasra una ip con formate correcto, no valida esta condición. No te olvides de darle permisos de ejecución 😅
+
+```bash
+chmod +x bloquear_mikrotik.py
+```
+y a probar !!!
+
+```bash
+~/bloquear_mikrotik.py 4.4.4.4
+```
+La respuesta debería ser si todo está bien
+
+```bash
+IP 4.4.4.4 bloqueada en Mikrotik.
+```
+Ahora deberías ver en el routeros un item dinámico nuevo en el address list del firewall que tendrías que usar como source de una regla drop. 
+
 ## 🔄 Reinicio del servicio Fail2Ban
 Después de configurar el filtro, la acción y el jail, es necesario reiniciar el servicio para aplicar los cambios:
 ```
@@ -148,7 +165,6 @@ Y para ver el estado específico del jail:
 ```bash
 sudo fail2ban-client status auth_fail
 ```
-
 
 
 ## 🧠 Filosofía de diseño distribuido
