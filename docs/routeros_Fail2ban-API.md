@@ -6,7 +6,7 @@ Sistema distribuido de defensa automatizada que detecta intentos de autenticaci�
 
 ## 🎯 Objetivo
 
-- Detectar intentos de acceso fallido en logs remotos.
+- Detectar intentos de acceso fallido en logs.
 - Bloquear automáticamente las IP ofensivas en Mikrotik.
 - Mantener sincronización entre `bantime` de Fail2Ban y `timeout` de la lista dinámica.
 - Evitar redundancias en el proceso de desbloqueo.
@@ -14,7 +14,7 @@ Sistema distribuido de defensa automatizada que detecta intentos de autenticaci�
 ---
 ## ⚠ Instalar la librería routeros_api de python
 
-Necesitamos instalar una librería especial que nos resuelve ya la interacción con la API de RouterOS. Esta librería cuando la instalamos con pip, nos genera un error en la que para resoverlo lo más sencillo es crear un entrno virtual. En Linux no tenemos ni pip ni venv instalados por defecto así que ...
+Necesitamos instalar una librería especial que nos resuelve ya la interacción con la API de RouterOS. Esta librería cuando la instalamos con pip, nos genera un error en la que para resoverlo lo más sencillo es crear un entorno virtual. En Linux no tenemos ni pip ni venv instalados por defecto así que ...
 ```
 sudo atp install pip python3.11-venv
 ```
@@ -82,11 +82,12 @@ bantime = 1800  # 30 minutos
 actionstart =
 actionstop =
 actioncheck =
-actionban = /ruta/a/bloquear_mikrotik.py <ip>
+actionban = /home/usuario_actual/bloquear_mikrotik.py <ip>
 actionunban =
 ```
 
 #### 🧠 Nota de diseño: no se define actionunban, ya que al usar "timeout" en la lista, el item se vuelve dinámico y Routeros gestiona el desbloqueo automáticamente. Esto permite una sincronización natural con el bantime de Fail2Ban, evitando redundancias y manteniendo la arquitectura desacoplada y sincronizada.
+#### Como notarás en el script siguiente, en el hashbang, invoco el interprete de python que está dentro del entorno virtual, si no lo hago de esta manera, no podré llamar el módulo de la librería routeros_api.
 
 ## 🐍 Script bloquear_mikrotik.py
 ```
