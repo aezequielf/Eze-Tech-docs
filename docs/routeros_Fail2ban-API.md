@@ -16,14 +16,12 @@ Sistema distribuido de defensa automatizada que detecta intentos de autenticaci�
 
 Necesitamos instalar una librería especial que nos resuelve ya la interacción con la API de RouterOS. Esta librería cuando la instalamos con pip, nos genera un error en la que para resoverlo lo más sencillo es crear un entrno virtual. En Linux no tenemos ni pip ni venv instalados por defecto así que ...
 ```
-bash
 sudo atp install pip python3.11-venv
 ```
 #### Nota: estoy usando justo python 3.11
 
 Una vez hecho esto:
 ```
-bash
 python3 -m venv ~/venvs/mikrotik-api
 source venvs/mikrotik-api/bin/activate
 pip install routeros_api
