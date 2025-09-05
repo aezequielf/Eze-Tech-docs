@@ -1,6 +1,6 @@
-# 🛡️ Integración Fail2Ban + Mikrotik vía API
+# 🛡️ Integración Fail2Ban + Mikrotik vía API 
 
-Sistema distribuido de defensa automatizada que detecta intentos de autenticación fallida en logs del sistema y bloquea las IP ofensivas directamente en el firewall de RouterOS, usando listas dinámicas con timeout sincronizado. Esta mini tutorial supone el manejo de ciertos conocimientos básicos de Linux, Mikrotik, redes y programación python. No entraremos en detalles de como se implementa el firewall en RouterOs para que use la lista dinámica ya que eso conlleva un proceso menor y sencillo.
+Sistema distribuido de defensa automatizada que detecta intentos de autenticación fallida en logs del sistema y bloquea las IP ofensivas directamente en el firewall de RouterOS, usando listas dinámicas con timeout sincronizado. Esta mini tutorial supone el manejo de ciertos conocimientos básicos de Linux, Mikrotik, redes y programación python. No entraremos en detalles de como se implementa el firewall en RouterOs para que use la lista dinámica ya que eso conlleva un proceso menor y sencillo. Tampoco observaremos la creación de un usuario que tenga permisos de aceptar y ejecutar las peticiones de la api en RouterOS.
 
 ---
 
