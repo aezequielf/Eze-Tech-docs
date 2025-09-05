@@ -1,6 +1,6 @@
 # 🛡️ Integración Fail2Ban + Mikrotik vía API
 
-Sistema distribuido de defensa automatizada que detecta intentos de autenticación fallida en logs del sistema y bloquea las IP ofensivas directamente en el firewall de RouterOS, usando listas dinámicas con timeout sincronizado. Esta mini tutorial supone el manejo de ciertos conocimientos básicos de Linux, Mikrotik, redes y programación python.
+Sistema distribuido de defensa automatizada que detecta intentos de autenticación fallida en logs del sistema y bloquea las IP ofensivas directamente en el firewall de RouterOS, usando listas dinámicas con timeout sincronizado. Esta mini tutorial supone el manejo de ciertos conocimientos básicos de Linux, Mikrotik, redes y programación python. No entraremos en detalles de como se implementa el firewall en RouterOs para que use la lista dinámica ya que eso conlleva un proceso menor y sencillo.
 
 ---
 
@@ -12,7 +12,24 @@ Sistema distribuido de defensa automatizada que detecta intentos de autenticaci�
 - Evitar redundancias en el proceso de desbloqueo.
 
 ---
-## Instalar la librería routeros_api de python
+## ⚠ Instalar la librería routeros_api de python
+
+Necesitamos instalar una librería especial que nos resuelve ya la interacción con la API de RouterOS. Esta librería cuando la instalamos con pip, nos genera un error en la que para resoverlo lo más sencillo es crear un entrno virtual. En Linux no tenemos ni pip ni venv instalados por defecto así que ...
+```
+bash
+sudo atp install pip python3.11-venv
+```
+#### Nota: estoy usando justo python 3.11
+
+Una vez hecho esto:
+```
+bash
+python3 -m venv ~/venvs/mikrotik-api
+source venvs/mikrotik-api/bin/activate
+pip install routeros_api
+```
+A esta altura deberíamos tener la librería routero_api instaladas ya dentro de la carpeta del usuario actual en el entorno virtual
+
 ---
 ## 🧩 Componentes
 
@@ -27,6 +44,27 @@ Sistema distribuido de defensa automatizada que detecta intentos de autenticaci�
 ---
 
 ## ⚙️ Configuración
+### auth_fail.conf
+
+```ini
+[Definition]
+failregex = ^.*\[\s*<HOST>\s*\].*Error: authentication failed
+ignoreregex =
+```
+####  Nota: en esta caso en particular busco en los logs, una linea como esta, donde el ip que quiero capturar está entre los corchetes [] 
+```
+2025-09-05T11:17:32.937307-03:00 server_auth VPS-uIMVkzSz[212.11.64.212] 1757081850-967898-29275-965059-1 1757081851 1757081852 RECV - - 2 83 535 Error: authentication failed [usuario_que_no_existe]
+```
+Podemos probar si la expresión regular realmente es correcta y "detecta" la linea que buscamos en el log 
+
+```
+ sudo fail2ban-regex /var/log/syslog /etc/fail2ban/filter.d/auth_fail.conf
+```
+Si funciona bien deberíamos ver unas línas así con el matches distinto de 0, en mi caso matcheó 32243 veces.
+``` 
+Lines: 78790 lines, 0 ignored, 32243 matched, 46547 missed
+[processed in 4.77 sec]
+```
 
 ### `jail.local`
 
@@ -50,11 +88,11 @@ actionban = /ruta/a/bloquear_mikrotik.py <ip>
 actionunban =
 ```
 
-## 🧠 Nota de diseño: no se define actionunban, ya que Mikrotik gestiona el desbloqueo automáticamente mediante listas dinámicas con timeout. Esto permite una sincronización natural con el bantime de Fail2Ban, evitando redundancias y manteniendo la arquitectura desacoplada.
+#### 🧠 Nota de diseño: no se define actionunban, ya que al usar "timeout" en la lista, el item se vuelve dinámico y Routeros gestiona el desbloqueo automáticamente. Esto permite una sincronización natural con el bantime de Fail2Ban, evitando redundancias y manteniendo la arquitectura desacoplada y sincronizada.
 
 ## 🐍 Script bloquear_mikrotik.py
 ```
-#!/home/eferro/venvs/mikrotik-api/bin/python3
+#!/home/usuario_actual/venvs/mikrotik-api/bin/python3
 from routeros_api import RouterOsApiPool
 import sys
 
@@ -93,17 +131,23 @@ except Exception as e:
 if __name__ == "__main__":
     print(f"IP {ip_bloquear} bloqueada en Mikrotik.")
 ```
-
+## 🔄 Reinicio del servicio Fail2Ban
+Después de configurar el filtro, la acción y el jail, es necesario reiniciar el servicio para aplicar los cambios:
+```
+bash
+sudo systemctl restart fail2ban
+```
 ## ✅ Validación
-En Debian
+
+Verificar que el jail esté activo con:
+```bash
+sudo fail2ban-client status
+```
+
+Y para ver el estado específico del jail:
+```bash
 sudo fail2ban-client status auth_fail
-
-
-sudo fail2ban-client status auth_fail | grep 'Banned IP list'
-
-
-En Mikrotik
-/ip firewall address-list print where list="Spammer"
+```
 
 
 
