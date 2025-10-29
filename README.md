@@ -4,7 +4,7 @@ Documentación técnica reproducible sobre sistemas, redes y ciencia personal ap
 
 - [Modificar rutas en Linux con `ip route change`](docs/ip-route-change.md)
 - [Implementar Fail2Ban para bloquear dinámicamente mediante FW de RouterOR -Mikrotik-](docs/routeros_Fail2ban-API.md).
-- [Breve documentación sobre freeze de Linux en Vm Esxi](docs/driver_vmxnet3_problem).
+- [Breve documentación sobre freeze de Linux en Vm Esxi](docs/driver_vmxnet3_problem.md).
 
 ## ✍️ Autor
 
